@@ -26,5 +26,10 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
+    Users.associates = function(models) {
+        Users.hasMany(models.ChatRooms)
+        Users.hasMany(models.ChitChats)
+    }
+
     return Users;
 }

@@ -51,7 +51,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.post("login", (req, res) => {
+router.post("/login", (req, res) => {
     db.Users.findOne({
         where: {
             email: req.body.email
@@ -67,12 +67,12 @@ router.post("login", (req, res) => {
                 firstName: foundUser.firstName,
                 lastName: foundUser.lastName,
                 accountName: foundUser.accountName
-            }
-            const token = jwt.sign(userTokenInfo, process.env.JWT_SECRET, { expiresIn: "2h" })
-            return res.status(200).json({ token: token })
+            };
+            const token = jwt.sign(userTokenInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
+            return res.status(200).json({ token: token });
         } else {
-            return res.status(403).send("Incorrect password, please try again")
-        }
+            return res.status(403).send("Incorrect password, please try again");
+        };
     });
 });
 

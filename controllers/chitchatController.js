@@ -21,42 +21,44 @@ const checkAuthStatus = request => {
 };
 
 router.get("/", (req, res) => {
-    db.ChatRooms.findAll({
+    db.ChitChats.findAll({
 
-    }).then(rooms => {
-        res.json(rooms);
+    }).then(chitchat => {
+        res.json(chitchat);
     }).catch(err => {
         console.log(err);
-        res.status(500).send("Unable to find chat rooms");
+        res.status(500).send("Unable to find chat logs");
     });
 });
 
-router.get("/:id", (req, res) => {
-    db.ChatRooms.findOne({
+router.get("/:id", (req,res) => {
+    db.ChitChats.findOne({
         where: {
             id: req.params.id
         }
-    }).then(foundChatRoom => {
-        res.json(foundChatRoom)
+    }).then(result => {
+        res.json(result);
     }).catch(err => {
-        console.log(err)
-        res.status(500).send("Unable to find chat room")
-    })
-})
+        console.log(err);
+        res.status(500).send("Unable to find message");
+    });
+});
 
 router.post("/", (req, res) => {
     const loggedInUser = checkAuthStatus(req)
     if (!loggedInUser) {
         return res.status(401).send("Please login first")
     }
-    db.ChatRooms.create({
-        roomName: req.body.roomName
-    }).then(newChatRoom => {
-        res.json(newChatRoom);
+    db.ChitChats.create({
+        message: req.body.message,
+        ChatRoomId: req.body.ChatRoomId,
+        UserId: loggedInUser.id
+    }).then(result => {
+        res.json(result);
     }).catch(err => {
-        console.log(err)
-        res.status(500).send("Unable to create new chat room");
+        console.log(err);
+        res.status(500).send("Unable to create new chitchat message");
     });
 });
 
-module.exports = router;
+module.exports = router

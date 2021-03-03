@@ -4,7 +4,7 @@ const router = express.Router();
 // Import all routes
 const userRoutes = require('./usersController')
 const chatroomsRoutes = require('./chatroomsController')
-// const savedrecipeRoutes = require ('./savedrecipeController')
+const chitchatRoutes = require ('./chitchatController')
 // const ingredientsRoutes = require('./ingredientsController')
 // const stepsRoutes = require('./stepsController')
 
@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 // Use all routes
 router.use('/api/users', userRoutes)
 router.use('/api/chatrooms', chatroomsRoutes)
-// router.use('/api/savedrecipes', savedrecipeRoutes)
+router.use('/api/chitchats', chitchatRoutes)
 // router.use('/api/ingredients', ingredientsRoutes)
 // router.use('/api/steps', stepsRoutes)
 

@@ -27,9 +27,19 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Users.associates = function(models) {
-        Users.hasMany(models.ChatRooms)
-        Users.hasMany(models.ChitChats)
-    }
+        Users.hasMany(models.ChatRooms);
+        Users.hasMany(models.ChitChats);
+    };
+
+    Users.beforeCreate(function (user) {
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    });
+
+    // Users.beforeBulkUpdate(function (user) {
+    //     if (user.attributes.password !== "" && user.attributes.password !== undefined && user.attributes.password !== null) {
+    //         user.attributes.password = bcrypt.hashSync(user.attributes.password, bcrypt.genSaltSync(10), null);
+    //     }
+    // })
 
     return Users;
-}
+};

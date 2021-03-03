@@ -27,13 +27,13 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Users.associates = function(models) {
-        Users.hasMany(models.ChatRooms)
-        Users.hasMany(models.ChitChats)
-    }
+        Users.hasMany(models.ChatRooms);
+        Users.hasMany(models.ChitChats);
+    };
 
     Users.beforeCreate(function (user) {
         user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
-    })
+    });
 
     // Users.beforeBulkUpdate(function (user) {
     //     if (user.attributes.password !== "" && user.attributes.password !== undefined && user.attributes.password !== null) {
@@ -42,4 +42,4 @@ module.exports = function(sequelize, DataTypes) {
     // })
 
     return Users;
-}
+};

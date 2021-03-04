@@ -27,8 +27,10 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Users.associates = function(models) {
+        Users.hasMany(models.Friends)
         Users.hasMany(models.ChatRooms);
         Users.hasMany(models.ChitChats);
+
     };
 
     Users.beforeCreate(function (user) {

@@ -31,7 +31,20 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req,res) => {
+router.get("/:ChatRoomId", (req,res) => {
+    db.ChitChats.findAll({
+        where: {
+            ChatRoomId: req.params.ChatRoomId
+        }
+    }).then(messages => {
+        res.json(messages);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).send("Unable to find messages");
+    });
+});
+
+router.get("/message/:id", (req,res) => {
     db.ChitChats.findOne({
         where: {
             id: req.params.id

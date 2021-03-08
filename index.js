@@ -5,7 +5,7 @@ require("dotenv").config()
 // ================================================
 var app = express();
 var PORT = process.env.PORT || 8080;
-// var cors = require('cors')
+var cors = require('cors')
 var allRoutes = require('./controllers');
 
 // Requiring our models for syncing
@@ -21,7 +21,7 @@ app.use(express.json());
 // }))
 
 // DEV CORS
-// app.use(cors())
+app.use(cors())
 
 app.use('/', allRoutes);
 

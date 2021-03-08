@@ -40,7 +40,6 @@ router.post("/", (req, res) => {
     }).then(newUser => {
         res.json(newUser);
     }).catch(err => {
-        console.log(err);
         if (err.errors[0].message === "users.accountName must be unique") {
             return res.status(409).send("Account name is taken, please choose another account name.");
         } else if (err.errors[0].message === "users.email must be unique") {

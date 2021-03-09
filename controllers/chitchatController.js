@@ -19,7 +19,7 @@ const checkAuthStatus = request => {
     console.log(loggedInUser);
     return loggedInUser;
 };
-
+// router to get ALL messages in every chatroom (not used currently)
 router.get("/", (req, res) => {
     db.ChitChats.findAll({
 
@@ -30,8 +30,8 @@ router.get("/", (req, res) => {
         res.status(500).send("Unable to find chat logs");
     });
 });
-
-router.get("/:ChatRoomId", (req,res) => {
+// router to find all chat messages in chatroom 
+router.get("/chatRoom/:ChatRoomId", (req, res) => {
     db.ChitChats.findAll({
         where: {
             ChatRoomId: req.params.ChatRoomId
@@ -43,8 +43,8 @@ router.get("/:ChatRoomId", (req,res) => {
         res.status(500).send("Unable to find messages");
     });
 });
-
-router.get("/message/:id", (req,res) => {
+// router to find one specific message in chatroom
+router.get("/message/:id", (req, res) => {
     db.ChitChats.findOne({
         where: {
             id: req.params.id
@@ -56,7 +56,7 @@ router.get("/message/:id", (req,res) => {
         res.status(500).send("Unable to find message");
     });
 });
-
+// router to post a message in chatroom
 router.post("/", (req, res) => {
     const loggedInUser = checkAuthStatus(req)
     if (!loggedInUser) {
@@ -71,6 +71,36 @@ router.post("/", (req, res) => {
     }).catch(err => {
         console.log(err);
         res.status(500).send("Unable to create new chitchat message");
+    });
+});
+// router to update a specific message in chatroom
+router.put("/message/:id", (req, res) => {
+    const loggedInUser = checkAuthStatus(req)
+    if (!loggedInUser) {
+        return res.status(401).send("Please login first")
+    };
+    db.ChitChats.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(foundMessage => {
+        if (loggedInUser.id === foundMessage.UserId) {
+            db.ChitChats.update({
+                message: req.body.message
+            },
+                {
+                    where: {
+                        id: foundMessage.id
+                    }
+                }).then(updatedMessage => {
+                    res.json(updatedMessage);
+                }).catch(err => {
+                    console.log(err);
+                    res.status(500).send("Unable to update message");
+                })
+        } else {
+            return res.status(401).send("Not your message!");
+        };
     });
 });
 
